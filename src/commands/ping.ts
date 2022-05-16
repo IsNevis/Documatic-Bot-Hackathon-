@@ -14,6 +14,6 @@ export default {
             .setTitle('Ping')
             .setColor('BLURPLE')
             .setDescription(':ping_pong: Pong!')
-            return embed
+        return embed
 	},
 } as ICommand
