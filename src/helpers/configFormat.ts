@@ -5,14 +5,14 @@ export class Config {
 	public prefix: string
 	public owners: Snowflake | Snowflake[]
 	public testServers: Snowflake | Snowflake[]
-	public webhookURL: string
+	public debugWebhookURL: string
 
 	public constructor(options: ConfigOptions) {
 		this.credentials = options.credentials
 		this.owners = options.owners
 		this.prefix = options.prefix
 		this.testServers = options.testServers
-		this.webhookURL = options.webhookURL
+		this.debugWebhookURL = options.debugWebhookURL
 	}
 }
 
@@ -21,7 +21,7 @@ export interface ConfigOptions {
 	prefix: string
 	owners: Snowflake | Snowflake[]
 	testServers: Snowflake | Snowflake[]
-	webhookURL: string
+	debugWebhookURL: string
 }
 
 interface Credentials {

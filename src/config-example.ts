@@ -10,5 +10,5 @@ export default new Config({
 	],
 	prefix: '-',
 	testServers: ['818627434517364757'],
-	webhookURL: '',
+	debugWebhookURL: '',
 })
