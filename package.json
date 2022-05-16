@@ -21,6 +21,7 @@
     "discord.js": "^13.7.0",
     "mongoose": "^6.3.3",
     "nodemon": "^2.0.16",
+    "strip-ansi": "^6.0.0",
     "wokcommands": "^1.5.3"
   }
 }
