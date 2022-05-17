@@ -2,29 +2,34 @@ import { type Snowflake } from 'discord.js'
 
 export class Config {
 	public credentials: Credentials
-	public prefix: string
-	public owners: Snowflake | Snowflake[]
-	public testServers: Snowflake | Snowflake[]
-	public debugWebhookURL: string
+	public developer: Developer
+	public settings: Settings
 
 	public constructor(options: ConfigOptions) {
 		this.credentials = options.credentials
-		this.owners = options.owners
-		this.prefix = options.prefix
-		this.testServers = options.testServers
-		this.debugWebhookURL = options.debugWebhookURL
+		this.developer = options.developer
+		this.settings = options.settings
 	}
 }
 
 export interface ConfigOptions {
 	credentials: Credentials
-	prefix: string
+	developer: Developer
+	settings: Settings
+}
+
+interface Credentials {
+	discordBotToken: string
+	mongoURI: string
+}
+
+interface Developer {
 	owners: Snowflake | Snowflake[]
 	testServers: Snowflake | Snowflake[]
 	debugWebhookURL: string
 }
 
-interface Credentials {
-	token: string
-	mongoURI: string
+interface Settings {
+	prefix: string
+	reloginCooldown: number
 }

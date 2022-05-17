@@ -2,13 +2,16 @@ import { Config } from './helpers/configFormat'
 
 export default new Config({
 	credentials: {
-		token: '',
-		mongoURI: '',
+		discordBotToken: 'bot-token',
+		mongoURI: 'mongo',
 	},
-	owners: [
-		'322862723090219008',
-	],
-	prefix: '-',
-	testServers: ['818627434517364757'],
-	debugWebhookURL: '',
+	developer: {
+		owners: [ 'developer-user-id'],
+		testServers: ['developer-test-server-id'],
+		debugWebhookURL: 'discord-webhook',
+	},
+	settings: {
+		prefix: '?',
+		reloginCooldown: 10, // in seconds
+	}
 })
