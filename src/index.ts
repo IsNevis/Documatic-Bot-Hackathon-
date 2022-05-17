@@ -5,11 +5,8 @@ import chalk from 'chalk'
 import config from './config'
 
 export const client = new DiscordJS.Client({
-	allowedMentions: { parse: ['users'] },
 	ws: {
-		properties: {
-			$browser: 'Discord Android'
-		}
+		properties: { $browser: 'Discord Android' }
 	},
 
 	partials: ['CHANNEL', 'GUILD_MEMBER', 'GUILD_SCHEDULED_EVENT', 'MESSAGE', 'REACTION', 'USER'],
@@ -27,6 +24,8 @@ export const client = new DiscordJS.Client({
 		Intents.FLAGS.GUILD_VOICE_STATES,
 		Intents.FLAGS.GUILD_SCHEDULED_EVENTS
 	],
+
+	allowedMentions: { parse: ['users'] },
 })
 
 client.login(config.credentials.token)
