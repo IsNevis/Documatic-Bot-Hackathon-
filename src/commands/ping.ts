@@ -1,4 +1,3 @@
-import { MessageEmbed } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { simpleEmbed } from '../helpers/utils'
 
