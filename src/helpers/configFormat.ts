@@ -31,5 +31,7 @@ interface Developer {
 
 interface Settings {
 	prefix: string
+	discordBotInviteURL: string
+	discordBotSupportServerURL: string
 	reloginCooldown: number
 }

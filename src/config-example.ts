@@ -12,6 +12,8 @@ export default new Config({
 	},
 	settings: {
 		prefix: '?',
+		discordBotInviteURL: '',
+		discordBotSupportServerURL: '',
 		reloginCooldown: 10, // in seconds
 	}
 })
