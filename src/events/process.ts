@@ -3,7 +3,7 @@ import { MessageEmbed } from 'discord.js'
 import process from 'node:process'
 import stripAnsi from 'strip-ansi'
 import config from '../config'
-import { getWebhook } from '../helpers/utils'
+import { getWebhook, simpleEmbed } from '../helpers/utils'
 import { client } from '../index'
 
 process.on('unhandledRejection', async (error: Error) => check('Unhandled rejection', error))
@@ -23,15 +23,11 @@ function check( prefix: string, error: Error ) {
 function errorEmbed(error: Error) {
 	const info = getWebhook(config.developer.debugWebhookURL)
 	if (!info) return
-	
-	const errorEmbed = new MessageEmbed()
-		.setColor('RED')
-		.setDescription(stripAnsi(error.message))
-		.setTimestamp()
 
 	return client.fetchWebhook(info.id, info.token).then((webhook) =>
 		webhook.send({
-			embeds: [errorEmbed],
+			// embeds: [errorEmbed],
+			embeds: [simpleEmbed(error.name, `\`\`\`${stripAnsi(error.message)}\`\`\``, 'RED')],
 			username: client.user?.tag,
 			avatarURL: client.user?.displayAvatarURL({ dynamic: true }),
 		})

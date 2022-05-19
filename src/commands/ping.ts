@@ -1,5 +1,6 @@
 import { MessageEmbed } from 'discord.js'
 import { ICommand } from 'wokcommands'
+import { simpleEmbed } from '../helpers/utils'
 
 export default {
 	category: 'General',
@@ -10,10 +11,6 @@ export default {
 	testOnly: true,
 
 	callback: async ({ }) => {
-        const embed = new MessageEmbed()
-            .setTitle('Ping')
-            .setColor('BLURPLE')
-            .setDescription(':ping_pong: Pong!')
-        return embed
+		return simpleEmbed('Ping', ':ping_pong: Pong!')
 	},
 } as ICommand
