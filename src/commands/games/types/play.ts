@@ -1,7 +1,7 @@
 import { MessageComponentInteraction, TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { getRandomNumber, simpleCollector } from '../../../helpers/utils'
-import { oddEven, tossOddEvenEmbed, tossNumberChooseWonEmbed } from './!game-structure'
+import { getRandomNumber, simpleCollector, simpleEmbed } from '../../../helpers/utils'
+import { oddEven, oddEvenChooseEmbed, tossNumberChooseEmbed, numberChooseCheck, tossNumberChooseTotal, batBallChooseEmbed, batBallChooseBotEmbed, botBatBallChoose, startBotGameEmbed, stringToNumber, botGameEmbed } from './!game-structure'
 
 export default {
 	category: 'Games',
@@ -14,61 +14,102 @@ export default {
 	callback: async ({ interaction }) => {
         const channel = interaction.channel as TextChannel
         const { member, options } = interaction
-
-        tossOddEvenEmbed( interaction, 'Bot' )
-
-
         const botCollector = simpleCollector(interaction)
+
+        let isOddEvenChooseComplete = false
+        let isTossNumberChooseComplete = false
+        let isBatBallChooseComplete = false
+        let isStartBotGameComplete = false
+        let isBotGameComplete = false
+
+        let configGameWickets = 3
+        let gameWickets = configGameWickets - 1
+        let gameTotalPlayerScore: number = 0
+        let gameTotalBotScore: number = 0
+
+        oddEvenChooseEmbed( interaction, 'Bot' )
         
-        botCollector.on('collect', (int: MessageComponentInteraction) => {
-            const tossNumberChooseOptions = ['one', 'two', 'three', 'four', 'five', 'six'] 
+        botCollector.on('collect', async (int: MessageComponentInteraction) => {
+            if (int.customId === 'odd' || int.customId === 'even' && isOddEvenChooseComplete === false) {
+                if (oddEven(int)) tossNumberChooseEmbed( interaction, int, 'won' )
+                else tossNumberChooseEmbed( interaction, int, 'loss' )
+                isOddEvenChooseComplete = true
+            } else if (numberChooseCheck(int) && isTossNumberChooseComplete === false) {
+                const totalNumber = tossNumberChooseTotal(int)
+                const botBatBallChooseWord = botBatBallChoose()
 
-            
-            if (int.customId === 'odd' || int.customId === 'even') {
-
-                if (oddEven(int)) {
-                    tossNumberChooseWonEmbed( interaction, int )
-                } else {
-                    tossNumberChooseWonEmbed( interaction, int )
-                    channel.send('false')
-                }
-
-            } else if (tossNumberChooseOptions.includes(int.customId)) {
-
-                const playerTossNumberWord = int.customId
-                let playerTossNumber = 0
-                const botTossNumber = getRandomNumber(1, 6)
-
-                switch (playerTossNumberWord) {         
-                    case 'one':
-                        playerTossNumber = 1
-                        break;
-                    case 'two':
-                        playerTossNumber = 2
-                        break;
-                    case 'three':
-                        playerTossNumber = 3
-                        break;
-                    case 'four':
-                        playerTossNumber = 4
-                        break;
-                    case 'five':
-                        playerTossNumber = 5
-                        break;
-                    case 'six':
-                        playerTossNumber = 6
-                        break;
-                }
-
-                const totalNumber: number = playerTossNumber + botTossNumber
-                console.log(botTossNumber)
                 if (totalNumber % 2 === 0) {
-                    console.log(`${totalNumber} is even`)
+                    batBallChooseEmbed(interaction, int, totalNumber)
                 } else {
-                    console.log(`${totalNumber} is odd`)
+                    batBallChooseBotEmbed(interaction, int, totalNumber, botBatBallChooseWord)
                 }
+                isTossNumberChooseComplete = true
+            } else if (int.customId === 'bat' || int.customId === 'ball' && isBatBallChooseComplete === false) {
+                startBotGameEmbed(interaction, int)
+                isBatBallChooseComplete = true
+            } else if (int.customId === 'startBotGame' || numberChooseCheck(int) && isStartBotGameComplete === false) {
+                
+                botGameEmbed(interaction, int, gameTotalPlayerScore)
+                isStartBotGameComplete = true
+                // if (numberChooseCheck(int)) {
+                //     wickets = wickets - 1
+                //     for (let i = 0; i < wickets; i ) {
+                //         console.log(wickets + ': ' + i)
+
+                //         let playerScore: number = stringToNumber(int.customId)
+                //         let botScore: number = getRandomNumber(0,6)
+                //         console.log(`player: ${playerScore}, bot: ${botScore}`)
+
+                //         botGameEmbed(interaction, int, totalPlayerScore)
+    
+                //         if (playerScore === botScore) {
+                //             i++
+                //         } else {
+                //             totalPlayerScore = totalPlayerScore + playerScore
+                //             // botGameEmbed(interaction, int, totalPlayerScore, botScore)
+                //         }
+                //         isStartBotGameComplete = true
+                //     }
+                // } else {
+                //     return
+                // }                
+            } else if (numberChooseCheck(int) && isStartBotGameComplete === true && isBotGameComplete === false) {
+                
+                console.log(gameWickets)
+
+                let playerScore: number = stringToNumber(int.customId)
+                let botScore: number = getRandomNumber(0,6)
+                console.log(`player: ${playerScore}, bot: ${botScore}`)
+
+                if (playerScore === botScore) {
+                    gameWickets--
+                    if (gameWickets < 0) isBotGameComplete = true
+                } else {
+                    gameTotalPlayerScore = gameTotalPlayerScore + playerScore
+                }
+                
+                botGameEmbed(interaction, int, gameTotalPlayerScore)
+
+
+                // const wickets = gameWickets - 1
+
+                // for (let i = 0; i < wickets; i ) {
+                //     console.log(wickets + ': ' + i)
+
+                //     let playerScore: number = stringToNumber(int.customId)
+                //     let botScore: number = getRandomNumber(0,6)
+                //     console.log(`player: ${playerScore}, bot: ${botScore}`)
+
+                //     botGameEmbed(interaction, int, gameTotalPlayerScore)
+
+                //     if (playerScore === botScore) {
+                //         i++
+                //     } else {
+                //         gameTotalPlayerScore = gameTotalPlayerScore + playerScore
+                //     }
+                // }
             } else {
-               
+               return
             }
         })
 	},

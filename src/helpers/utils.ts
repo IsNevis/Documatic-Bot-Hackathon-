@@ -64,6 +64,8 @@ export function simpleCollector(interaction: CommandInteraction) {
         componentType: 'BUTTON',
         // time: time * 1000, // 6 secs
         time: 15 * 60 * 1000, // 15 minutes
+		idle: 2 * 60 * 1000,
+		dispose: true
     })
 
     collector.on('collect', (int: MessageComponentInteraction) => { if (int.customId === 'cancel') int.update({embeds: [simpleEmbed('Canceled!', 'Interaction was Canceled!', 'GOLD')], components: []}) })
