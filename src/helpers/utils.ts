@@ -31,9 +31,9 @@ export function simpleEmbed( embedTitle: string, embedDescription: string, embed
 
 export function simpleButtons( customId: string, label: string, style: MessageButtonStyleResolvable, emoji?: EmojiIdentifierResolvable, url?: string, disabled?: boolean) {
 	const button = new MessageButton()
-				.setCustomId(customId)
-				.setLabel(label)
-				.setStyle(style)
+		.setCustomId(customId)
+		.setLabel(label)
+		.setStyle(style)
 
 	if (disabled) button.setDisabled(disabled)
 	if (emoji) button.setEmoji(emoji)
@@ -44,9 +44,9 @@ export function simpleButtons( customId: string, label: string, style: MessageBu
 
 export function simpleURLButton( url: string, label: string, emoji?: EmojiIdentifierResolvable, disabled?: boolean) {
 	const button = new MessageButton()
-				.setURL(url)
-				.setLabel(label)
-				.setStyle('LINK')
+		.setURL(url)
+		.setLabel(label)
+		.setStyle('LINK')
 
 	if (disabled) button.setDisabled(disabled)
 	if (emoji) button.setEmoji(emoji)
@@ -83,7 +83,6 @@ export function simpleCollector(interaction: CommandInteraction) {
 		await client.users.cache.delete(interaction.user.id)
 		await collector.stop()
 	})
-
 
     return collector
 }

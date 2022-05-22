@@ -1,6 +1,6 @@
 import { MessageComponentInteraction } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { getRandomNumber, simpleCollector, simpleEmbed } from '../../../helpers/utils'
+import { getRandomNumber, simpleCollector } from '../../../helpers/utils'
 import { booleanOddEven, playerOddEvenTossEmbed, numberTossCheck, numberTossTotal, botBatBallToss, startBotBatGameEmbed, stringToNumber, botPlayerBatGameEmbed, botGameWicketsOverEmbed, numberTossEmbed, batBallTossEmbed, botPlayerBallGameEmbed, cannotHaveMultipleGenjutsuEmbed, botGameOverEmbed } from './!game-structure'
 import instanceTracker from '../../../models/instanceTracker'
 

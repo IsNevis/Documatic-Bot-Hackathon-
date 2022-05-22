@@ -3,7 +3,7 @@ import { simpleEmbed } from '../../helpers/utils';
 
 export default {
 	category: 'Games',
-	description: 'Explain the rules of the game.',
+	description: 'Explain the rules of the game!',
   
 	slash: true,
 	guildOnly: true,  

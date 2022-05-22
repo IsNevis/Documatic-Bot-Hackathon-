@@ -2,7 +2,7 @@ import { CommandInteraction, MessageActionRow, MessageComponentInteraction } fro
 import { getRandomNumber, simpleButtons, simpleEmbed, simpleURLButton } from "../../../helpers/utils"
 
 const cancelButton = simpleButtons('cancel', 'Cancel', 'DANGER')
-const infoButton = simpleURLButton('https://www.google.com', 'Info')
+const infoButton = simpleURLButton('https://duckduckgo.com/?q=how+to+play+hand+cricket', 'Info')
 const continueButton = simpleButtons('continue', 'Continue', 'PRIMARY')
 
 const oneButton = simpleButtons('one', 'One', 'PRIMARY')
@@ -18,8 +18,9 @@ const numberRow1 = new MessageActionRow().addComponents(oneButton, twoButton, th
 const numberRow2 = new MessageActionRow().addComponents(fiveButton, sixButton, infoButton, cancelButton)
 
 
-export async function playerOddEvenTossEmbed( interaction: CommandInteraction, type: string) {
+// Embeds
 
+export async function playerOddEvenTossEmbed( interaction: CommandInteraction, type: string) {
     const oddButton = simpleButtons('odd', 'Odd', 'PRIMARY')
     const evenButton = simpleButtons('even', 'Even', 'PRIMARY')
 
@@ -34,7 +35,6 @@ export async function playerOddEvenTossEmbed( interaction: CommandInteraction, t
 
     await interaction.reply({ embeds: [playerOddEvenTossEmbed], components: [playerOddEvenTossRow], ephemeral: true })
 }
-
 
 export async function invalidButtonEmbed( int: MessageComponentInteraction ) {
     const invalidButtonEmbed = simpleEmbed(
@@ -55,7 +55,6 @@ export function cannotHaveMultipleGenjutsuEmbed( interaction: CommandInteraction
 }
 
 export async function numberTossEmbed( int: MessageComponentInteraction, didPlayerWinToss: boolean ) {
-
     let playerTossResult: string
 
     switch (didPlayerWinToss) {
@@ -101,19 +100,7 @@ export async function batBallTossEmbed( int: MessageComponentInteraction, totalN
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
 export async function startBotBatGameEmbed( int: MessageComponentInteraction ) {
-    
     const startBotGameButton = simpleButtons('startBotGame', 'Start', 'SUCCESS')
     const startBotGameRow = new MessageActionRow().addComponents(startBotGameButton, infoButton, cancelButton)
     
@@ -128,15 +115,6 @@ export async function startBotBatGameEmbed( int: MessageComponentInteraction ) {
     
     await int.update({ embeds: [startBotBatGameEmbed], components: [startBotGameRow] })
 }
-
-
-
-
-
-
-
-
-
 
 export async function botPlayerBatGameEmbed( int: MessageComponentInteraction, totalPlayerScore: number, wicketsLeft: number, totalWickets: number,  gamePlayerScore: number, gameBotScore: number) {
     
@@ -192,6 +170,7 @@ export async function botGameWicketsOverEmbed( int: MessageComponentInteraction,
 }
 
 export async function botGameOverEmbed( int: MessageComponentInteraction, totalPlayerScore: number, totalBotScore: number, totalWickets: number) {
+    
     const botGameOverEmbed = simpleEmbed(
         `Game Over!`,
         `
@@ -203,30 +182,6 @@ export async function botGameOverEmbed( int: MessageComponentInteraction, totalP
 
     await int.update({ embeds: [botGameOverEmbed], components: [] })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Functions
 
@@ -247,7 +202,6 @@ export function booleanOddEven( int: MessageComponentInteraction ) {
 
     return tossOddEven === playerOddEvenNumber
 }
-
 
 export function numberTossCheck(int: MessageComponentInteraction) {
     const numberTossOptions = ['one', 'two', 'three', 'four', 'five', 'six'] 
