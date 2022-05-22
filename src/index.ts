@@ -3,6 +3,7 @@ import path from 'node:path'
 import WOKCommands from 'wokcommands'
 import chalk from 'chalk'
 import config from './config'
+import instanceTracker from './models/instanceTracker'
 
 const reloginCooldown = config.settings.reloginCooldown * 1000
 
@@ -16,15 +17,11 @@ export const client = new DiscordJS.Client({
 		Intents.FLAGS.GUILDS,
 		Intents.FLAGS.GUILD_MESSAGES,
 		Intents.FLAGS.GUILD_MEMBERS,
-		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-		Intents.FLAGS.GUILD_INVITES,
-		Intents.FLAGS.GUILD_WEBHOOKS,
-		Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
 	],
 
 	presence: {
 		activities: [{
-			name: '/help',
+			name: '**slash commands!**',
 			type: 'LISTENING' 
 		}],
 		status: 'online'
@@ -46,9 +43,12 @@ client.on('ready', async () => {
 		typeScript: true,
 		mongoUri: config.credentials.mongoURI,
 		showWarns: true,
+		disabledDefaultCommands: ['language', 'requiredrole']
 	})
 		.setColor('BLURPLE')
 		.setDefaultPrefix(config.settings.prefix)
+
+		await instanceTracker.deleteMany({ })
 })
 
 function reLogin (err: Error) {

@@ -1,9 +1,9 @@
-import { ButtonInteraction, CacheType, CommandInteraction, InteractionCollector, MessageActionRow, MessageComponentInteraction } from "discord.js"
+import { CommandInteraction, MessageActionRow, MessageComponentInteraction } from "discord.js"
 import { getRandomNumber, simpleButtons, simpleEmbed, simpleURLButton } from "../../../helpers/utils"
-const wait = require('node:timers/promises').setTimeout
 
 const cancelButton = simpleButtons('cancel', 'Cancel', 'DANGER')
 const infoButton = simpleURLButton('https://www.google.com', 'Info')
+const continueButton = simpleButtons('continue', 'Continue', 'PRIMARY')
 
 const oneButton = simpleButtons('one', 'One', 'PRIMARY')
 const twoButton = simpleButtons('two', 'Two', 'PRIMARY')
@@ -13,87 +13,111 @@ const fiveButton = simpleButtons('five', 'Five', 'PRIMARY')
 const sixButton = simpleButtons('six', 'Six', 'PRIMARY')
 
 
+const continueRow = new MessageActionRow().addComponents(continueButton, infoButton, cancelButton)
 const numberRow1 = new MessageActionRow().addComponents(oneButton, twoButton, threeButton, fourButton)
 const numberRow2 = new MessageActionRow().addComponents(fiveButton, sixButton, infoButton, cancelButton)
 
 
-
-// Odd and Even Function
-export async function oddEvenChooseEmbed( interaction: CommandInteraction, type: string) {
+export async function playerOddEvenTossEmbed( interaction: CommandInteraction, type: string) {
 
     const oddButton = simpleButtons('odd', 'Odd', 'PRIMARY')
     const evenButton = simpleButtons('even', 'Even', 'PRIMARY')
 
-    const oddEvenChooseRow = new MessageActionRow().addComponents(oddButton, evenButton, infoButton, cancelButton)
+    const playerOddEvenTossRow = new MessageActionRow().addComponents(oddButton, evenButton, infoButton, cancelButton)
 
-    const oddEvenChooseEmbed = simpleEmbed
+    const playerOddEvenTossEmbed = simpleEmbed
     (
         `Hand Cricket (Player vs ${type})`,
         `Please Choose **Odd** or **Even**!
         Click **cancel** to cancel the match`
     )
 
-    await interaction.reply({ embeds: [oddEvenChooseEmbed], components: [oddEvenChooseRow], ephemeral: true })
+    await interaction.reply({ embeds: [playerOddEvenTossEmbed], components: [playerOddEvenTossRow], ephemeral: true })
 }
 
 
-// Odd and Even NUmber Toss
-export function tossNumberChooseEmbed( interaction: CommandInteraction, int: MessageComponentInteraction, result: string ) {
-    const tossNumberChooseEmbed = simpleEmbed(
-        'Choose a Number!',
-        `You ${result} the toss! Choose a number between 1 and 6!
+export async function invalidButtonEmbed( int: MessageComponentInteraction ) {
+    const invalidButtonEmbed = simpleEmbed(
+        'Invalid Interaction!',
+        `${int.customId} is an invalid Button Interaction!` 
+    ).setColor('GOLD')
+    
+    await int.update({ embeds: [invalidButtonEmbed], components: [] })
+}
 
-        You get to choose first if you want to go bat or Ball, if the sum of both the players number is **${int.customId}**.
+export function cannotHaveMultipleGenjutsuEmbed( interaction: CommandInteraction ) {
+    const invalidButtonEmbed = simpleEmbed(
+        'Multiple instance is not Supported!',
+        `Cannot have multiple instance for the same player at once!!` 
+    ).setColor('GOLD')
+    
+    interaction.reply({ embeds: [invalidButtonEmbed] })
+}
+
+export async function numberTossEmbed( int: MessageComponentInteraction, didPlayerWinToss: boolean ) {
+
+    let playerTossResult: string
+
+    switch (didPlayerWinToss) {
+        case true:
+            playerTossResult = 'won'
+            break;
+        case false:
+            playerTossResult = 'lost'
+            break;
+    }
+
+    const numberTossEmbed = simpleEmbed(
+        'Choose a Number!',
+        `You ${playerTossResult} the toss! Choose a number between 1 and 6!
+
+        You get to choose first if you want to **Bat** or **Ball**, if the sum of both the players number is **${int.customId}**.
         ` 
     )
     
-    // interaction.editReply({ embeds: [tossNumberChooseEmbed], components: [numberRow1, numberRow2] })
-    int.update({ embeds: [tossNumberChooseEmbed], components: [numberRow1, numberRow2] })
+    await int.update({ embeds: [numberTossEmbed], components: [numberRow1, numberRow2] })
 }
 
-export function batBallChooseEmbed( interaction: CommandInteraction, int: MessageComponentInteraction, totalNumber: number ) {
-
+export async function batBallTossEmbed( int: MessageComponentInteraction, totalNumber: number, didPlayerGuessCorrectToss: boolean, botBatBallTossWord: string ) {
     const batButton = simpleButtons('bat', 'Bat', 'PRIMARY')
     const ballButton = simpleButtons('ball', 'Ball', 'PRIMARY')
+    const startBotGameButton = simpleButtons('startBotGame', 'Start', 'SUCCESS')
 
-    const batBallChooseRow = new MessageActionRow().addComponents(batButton, ballButton, infoButton, cancelButton)
+    const startBotGameRow = new MessageActionRow().addComponents(startBotGameButton, infoButton, cancelButton)
+    const batBallTossRow = new MessageActionRow().addComponents(batButton, ballButton, infoButton, cancelButton)
 
-    const batBallChooseEmbed = simpleEmbed(
+    const batBallTossEmbed = simpleEmbed(
         'Bat or Ball!',
-        `The total number is ${totalNumber} and it seems to match what you choose during toss! So you get to choose!
-
-        What do you want to do first? **Bat** or **Ball**.
+        `Woah! The total numbed is ${totalNumber}!
         ` 
     )
-    
-    // interaction.editReply({ embeds: [batBallChooseEmbed], components: [batBallChooseRow] })
-    int.update({ embeds: [batBallChooseEmbed], components: [batBallChooseRow] })
+
+    if (didPlayerGuessCorrectToss) {
+        batBallTossEmbed.addField('\u200b', 'You were correct! \n Do you wanna **bat** first or **ball** first? The bot gets the other one!')
+        await int.update({ embeds: [batBallTossEmbed], components: [batBallTossRow] })
+    } else {
+        batBallTossEmbed.addField('\u200b', `Aw! It seems like the bot wants to **${botBatBallTossWord}**! So you get the other one!`)
+        await int.update({ embeds: [batBallTossEmbed], components: [startBotGameRow] })
+    }
 }
 
-export function batBallChooseBotEmbed( interaction: CommandInteraction, int: MessageComponentInteraction, totalNumber: number, botBatBallChoose: string ) {
+
+
+
+
+
+
+
+
+
+
+
+export async function startBotBatGameEmbed( int: MessageComponentInteraction ) {
     
     const startBotGameButton = simpleButtons('startBotGame', 'Start', 'SUCCESS')
     const startBotGameRow = new MessageActionRow().addComponents(startBotGameButton, infoButton, cancelButton)
     
-    const batBallChooseBotEmbed = simpleEmbed(
-        'Bot is Correct!',
-        `The total number is ${totalNumber} and it seems to match what the bot choose during toss! So the bot gets to choose!
-
-        The bot has decided to **${botBatBallChoose}**!
-        Click on **Start** to Start the games
-        ` 
-    )
-    
-    // interaction.editReply({ embeds: [batBallChooseBotEmbed], components: [continueRow] })
-    int.update({ embeds: [batBallChooseBotEmbed], components: [startBotGameRow] })
-}
-
-export function startBotGameEmbed( interaction: CommandInteraction, int: MessageComponentInteraction) {
-    
-    const startBotGameButton = simpleButtons('startBotGame', 'Start', 'SUCCESS')
-    const startBotGameRow = new MessageActionRow().addComponents(startBotGameButton, infoButton, cancelButton)
-    
-    const startBotGameEmbed = simpleEmbed(
+    const startBotBatGameEmbed = simpleEmbed(
         'Are you Ready to play!',
         `
         You are going to **${int.customId}** first!
@@ -102,31 +126,114 @@ export function startBotGameEmbed( interaction: CommandInteraction, int: Message
         ` 
     )
     
-    // interaction.editReply({ embeds: [batBallChooseBotEmbed], components: [continueRow] })
-    int.update({ embeds: [startBotGameEmbed], components: [startBotGameRow] })
+    await int.update({ embeds: [startBotBatGameEmbed], components: [startBotGameRow] })
 }
 
 
-export function botGameEmbed( interaction: CommandInteraction, int: MessageComponentInteraction, totalPlayerScore: number) {
+
+
+
+
+
+
+
+
+export async function botPlayerBatGameEmbed( int: MessageComponentInteraction, totalPlayerScore: number, wicketsLeft: number, totalWickets: number,  gamePlayerScore: number, gameBotScore: number) {
     
-    // const botGameRow = new MessageActionRow().addComponents()
-    
-    const botGameEmbed = simpleEmbed(
-        `Choose a Number (${totalPlayerScore}/100)!`,
+    const botPlayerBatGameEmbed = simpleEmbed(
+        `Choose a Number (${totalPlayerScore}/100)! | Batting`,
         `
+        Total Player Score: **${totalPlayerScore}**
+        Wickets: **${wicketsLeft}/${totalWickets}**
+
+        You: **${gamePlayerScore}**, Bot: **${gameBotScore}**
+
         Click on a number between **1** and **6**!
         Click **info** for info and **cancel** to stop the match!
         `
     )
     
-    // interaction.editReply({ embeds: [batBallChooseBotEmbed], components: [continueRow] })
-    int.update({ embeds: [botGameEmbed], components: [numberRow1, numberRow2] })
+    await int.update({ embeds: [botPlayerBatGameEmbed], components: [numberRow1, numberRow2] })
 }
 
-// 
+export async function botPlayerBallGameEmbed( int: MessageComponentInteraction, totalBotScore: number, wicketsLeft: number, totalWickets: number, gamePlayerScore: number, gameBotScore: number) {
+    
+    const botPlayerBallGameEmbed = simpleEmbed(
+        `Choose a Number (${totalBotScore}/100)! | Balling`,
+        `
+        Total Bot Score: **${totalBotScore}**
+        Wickets: **${wicketsLeft}/${totalWickets}**
 
-export function oddEven( int: MessageComponentInteraction ) {
+        You: **${gamePlayerScore}**, Bot: **${gameBotScore}**
+
+        Click on a number between **1** and **6**!
+        Click **info** for info and **cancel** to stop the match!
+        `
+    )
+    
+    await int.update({ embeds: [botPlayerBallGameEmbed], components: [numberRow1, numberRow2] })
+}
+
+export async function botGameWicketsOverEmbed( int: MessageComponentInteraction, totalPlayerScore: number, totalBotScore: number, totalWickets: number, didPlayerBat: boolean, didPlayerBall: boolean, gamePlayerScore: number, gameBotScore: number) {
+        
+    const botGameWicketsOverEmbed = simpleEmbed(
+        `STOP!!`,
+        `
+        All wickets are gone!
+        You: **${gamePlayerScore}**, Bot: **${gameBotScore}**
+
+
+        Total Player Score: **${totalPlayerScore}**
+        Total Bot Score: **${totalBotScore}**
+        Total Wickets: **${totalWickets}**
+        `
+    )
+        await int.update({ embeds: [botGameWicketsOverEmbed], components: [continueRow] })
+}
+
+export async function botGameOverEmbed( int: MessageComponentInteraction, totalPlayerScore: number, totalBotScore: number, totalWickets: number) {
+    const botGameOverEmbed = simpleEmbed(
+        `Game Over!`,
+        `
+        Total Player Score: **${totalPlayerScore}**
+        Total Bot Score: **${totalBotScore}**
+        Total Wickets: **${totalWickets}**
+        `
+    )
+
+    await int.update({ embeds: [botGameOverEmbed], components: [] })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Functions
+
+export function booleanOddEven( int: MessageComponentInteraction ) {
+    const tossOddEven: number = getRandomNumber(0,1)
     const playerOddEven = int.customId
+
     let playerOddEvenNumber
 
     switch (playerOddEven) {
@@ -138,38 +245,36 @@ export function oddEven( int: MessageComponentInteraction ) {
             break;
     }
 
-    const tossOddEven: number = getRandomNumber(0,1)
-    
-    if (tossOddEven === playerOddEvenNumber) return true
-    else return false
+    return tossOddEven === playerOddEvenNumber
 }
 
-export function numberChooseCheck(int: MessageComponentInteraction) {
-    const numberChooseOptions = ['one', 'two', 'three', 'four', 'five', 'six'] 
-    return numberChooseOptions.includes(int.customId)
+
+export function numberTossCheck(int: MessageComponentInteraction) {
+    const numberTossOptions = ['one', 'two', 'three', 'four', 'five', 'six'] 
+    return numberTossOptions.includes(int.customId)
 }
 
-export function tossNumberChooseTotal (int: MessageComponentInteraction) {
-    const botTossNumber = getRandomNumber(1, 6)
-    const playerTossNumber = stringToNumber(int.customId)
+export function numberTossTotal (int: MessageComponentInteraction) {
+    const botNumberToss = getRandomNumber(1, 6)
+    const playerNumberToss = stringToNumber(int.customId)
 
-    return playerTossNumber + botTossNumber
+    return playerNumberToss + botNumberToss
 }
 
-export function botBatBallChoose () {
-    const botBatBallChooseNumber = getRandomNumber(0, 1)
-    let botBatBallChoose: string = ''
+export function botBatBallToss () {
+    const botBatBallNumberToss = getRandomNumber(0, 1)
+    let botBatBallTossWord: string = ''
 
-    switch (botBatBallChooseNumber) {         
+    switch (botBatBallNumberToss) {         
         case 0:
-            botBatBallChoose = 'Bat'
+            botBatBallTossWord = 'bat'
             break;
         case 1:
-            botBatBallChoose = 'Ball'
+            botBatBallTossWord = 'ball'
             break;
     }
 
-    return botBatBallChoose
+    return botBatBallTossWord
 }
 
 export function stringToNumber(numberString: string) {

@@ -1,6 +1,7 @@
-import { ColorResolvable, CommandInteraction, EmojiIdentifierResolvable, Interaction, MessageActionRow, MessageButton, MessageButtonStyleResolvable, MessageComponentInteraction, MessageEmbed, TextChannel } from "discord.js"
+import { ColorResolvable, CommandInteraction, EmojiIdentifierResolvable, Interaction, MessageButton, MessageButtonStyleResolvable, MessageComponentInteraction, MessageEmbed, TextChannel } from "discord.js"
 import { client } from "../index"
 import { version, author } from '../../package.json'
+import instanceTracker from "../models/instanceTracker"
 
 export function getWebhook(webhookUrl: string) {
 	let link = webhookUrl
@@ -55,21 +56,34 @@ export function simpleURLButton( url: string, label: string, emoji?: EmojiIdenti
 
 export function simpleCollector(interaction: CommandInteraction) {
     const channel = interaction.channel as TextChannel
-    const { member } = interaction
 
-    const filter = (buttonInteraction: Interaction) => { return member?.user.id === buttonInteraction.user.id }
+    const filter = (buttonInteraction: Interaction) => { return interaction.member?.user.id === buttonInteraction.user.id }
 
     const collector = channel.createMessageComponentCollector({
         filter,
         componentType: 'BUTTON',
-        // time: time * 1000, // 6 secs
-        time: 15 * 60 * 1000, // 15 minutes
-		idle: 2 * 60 * 1000,
-		dispose: true
+        // time: 2 * 60 * 1000,
+        time: 10 * 1000,
+		dispose: true,
     })
 
-    collector.on('collect', (int: MessageComponentInteraction) => { if (int.customId === 'cancel') int.update({embeds: [simpleEmbed('Canceled!', 'Interaction was Canceled!', 'GOLD')], components: []}) })
-    collector.on('end', async (int: MessageComponentInteraction) => { await int.update({ components: [] }) })
+    collector.on('collect', async (int: MessageComponentInteraction) => {
+		collector.resetTimer()
+		if (int.customId === 'cancel') { 
+			int.update({embeds: [simpleEmbed('Canceled!', 'Interaction was Canceled!', 'GOLD')], components: []})
+			await instanceTracker.deleteMany({_id: int.user.id })
+			await client.users.cache.delete(int.user.id)
+			await collector.stop()
+		}
+	})
+	
+	collector.on('end', async (int: MessageComponentInteraction) => {
+		await interaction.editReply({ components: [] })
+		await instanceTracker.deleteMany({_id: interaction.user.id })
+		await client.users.cache.delete(interaction.user.id)
+		await collector.stop()
+	})
+
 
     return collector
 }
@@ -77,4 +91,3 @@ export function simpleCollector(interaction: CommandInteraction) {
 export function getRandomNumber(min: number, max: number) {
 	return Math.floor(Math.random() * (max - min + 1) ) + min;
 } 
-

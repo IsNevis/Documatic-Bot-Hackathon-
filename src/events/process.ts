@@ -1,5 +1,4 @@
 import chalk from 'chalk'
-import { MessageEmbed } from 'discord.js'
 import process from 'node:process'
 import stripAnsi from 'strip-ansi'
 import config from '../config'
@@ -26,7 +25,6 @@ function errorEmbed(error: Error) {
 
 	return client.fetchWebhook(info.id, info.token).then((webhook) =>
 		webhook.send({
-			// embeds: [errorEmbed],
 			embeds: [simpleEmbed(error.name, `\`\`\`${stripAnsi(error.message)}\`\`\``, 'RED')],
 			username: client.user?.tag,
 			avatarURL: client.user?.displayAvatarURL({ dynamic: true }),
