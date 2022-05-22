@@ -30,7 +30,10 @@ export async function playerOddEvenTossEmbed( interaction: CommandInteraction, t
     (
         `Hand Cricket (Player vs ${type})`,
         `Please Choose **Odd** or **Even**!
-        Click **cancel** to cancel the match`
+        Click **cancel** to cancel the match
+        
+        Note: This game has been modified to fit under time limitations!
+        `
     )
 
     await interaction.reply({ embeds: [playerOddEvenTossEmbed], components: [playerOddEvenTossRow], ephemeral: true })
