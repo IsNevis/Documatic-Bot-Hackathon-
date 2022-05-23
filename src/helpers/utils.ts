@@ -62,8 +62,8 @@ export function simpleCollector(interaction: CommandInteraction) {
     const collector = channel.createMessageComponentCollector({
         filter,
         componentType: 'BUTTON',
-        // time: 2 * 60 * 1000,
-        time: 10 * 1000,
+        time: 2 * 60 * 1000,
+        // time: 10 * 1000,
 		dispose: true,
     })
 
