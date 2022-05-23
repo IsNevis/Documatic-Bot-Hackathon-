@@ -1,0 +1,9 @@
+node_modules/
+.env
+dist
+
+# Custom
+src/config.ts
+src/commands/games/gamerules.ts
+src_2
+package-lock.json
