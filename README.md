@@ -9,7 +9,12 @@
 A discord game bot made for the topic during 4th Documatic Hackathon!
 ## Features
 
-### HandCricket
+### HandCricket (IN-COMPLETE)
+- Commands
+  - /help
+  - /ping
+  - /play
+  - /gamerules
 
 - wrote this last so i dont know have energy for this...
 ## Installation
@@ -54,7 +59,7 @@ Due to this being a week long hackathon which has led me to make some erros whic
  - (Only while viewing through Smartphone) The embeds most of the times start after a tab or some spaces while viewing it in Smartphone.
  - Inconsistent Grammar and Word naming
  - Spamming Console with 'interaction has already been acknowledged'
- - Presence status having \*\*...\*\* as i did not know they did not work
+ - \*\*...\*\* status in different device shows differently!
 ## Incomplete Features
 
 Some of the features could not be completed in time. So, some are Incomplete and some were removed, Here is the list:
