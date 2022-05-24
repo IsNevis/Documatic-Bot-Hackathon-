@@ -40,7 +40,7 @@ client.on('ready', async () => {
 		commandsDir: path.join(__dirname, 'commands'),
 		featuresDir: path.join(__dirname, 'events'),
 		debug: true,
-		typeScript: true,
+		typeScript: true, // comment this in when compiling to javascript!
 		mongoUri: config.credentials.mongoURI,
 		showWarns: true,
 		disabledDefaultCommands: ['language', 'requiredrole']

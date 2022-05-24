@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-      name: `DrDocuDev`,
+      name: `DrDocu`,
       script: 'npm',
       args: 'start',
       node_args: ['--max_old_space_size=2048'],

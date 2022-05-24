@@ -5,7 +5,9 @@
   "main": "src/index.ts",
   "private": true,
   "scripts": {
-    "start": "nodemon src/index.ts"
+    "start": "nodemon src/index.ts",
+    "pm2": "pm2 start ecosystem.config.js",
+    "tsc": "tsc -w --skipLibCheck"
   },
   "repository": {
     "type": "git",
