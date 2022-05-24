@@ -112,7 +112,7 @@ export default {
                 isStartBotGameComplete = true             
             } else if ( int.customId === 'continue' || numberTossCheck(int) && isStartBotGameComplete === true ) {
                 gamePlayerScore = stringToNumber(int.customId)
-                gameBotScore = getRandomNumber(1,5)
+                gameBotScore = getRandomNumber(1,6)
                 
                 if (gameTotalPlayerScore >= 100 || gameTotalBotScore >= 100) {
                     botGameOverEmbed(int, gameTotalPlayerScore, gameTotalBotScore, totalWickets)
@@ -174,9 +174,3 @@ export default {
         }
 	},
 } as ICommand
-
-/*
-mECAHNISM FOR WIN AT 100
-total stores gets to next instance
-make player goes first even when balling
-*/
