@@ -15,5 +15,15 @@ export default new Config({
 		discordBotInviteURL: '',
 		discordBotSupportServerURL: '',
 		reloginCooldown: 10, // in seconds
+	},
+	logging: {
+		fileLogs: false,
+		webhookLogs: false,
+		discordDebugLOGS: false,
+		discordErrorLOGS: false,
+		discordWarnLOGS: false,
+		unhandledRejectionLOGS: false,
+		uncaughtExceptionLOGS: false,
+		exitLOGS: false,
 	}
 })

@@ -5,7 +5,7 @@ import config from '../../config'
 
 export default (client: Client) => {
     client.on('error', async (error) => {
-        //if (config.logging.debug !== true) return
+        if (config.logging.discordErrorLOGS !== true) return
         const info = getWebhook(config.developer.debugWebhookURL)
         if (!info) return
 

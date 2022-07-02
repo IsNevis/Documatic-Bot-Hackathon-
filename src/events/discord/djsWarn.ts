@@ -5,7 +5,7 @@ import config from '../../config'
 
 export default (client: Client) => {
     client.on('warn', async (message) => {
-        //if (config.logging.warn !== true) return
+        if (config.logging.discordWarnLOGS !== true) return
         const info = getWebhook(config.developer.debugWebhookURL)
         if (!info) return
 

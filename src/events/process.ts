@@ -5,9 +5,9 @@ import config from '../config'
 import { getWebhook, simpleEmbed } from '../helpers/utils'
 import { client } from '../index'
 
-process.on('unhandledRejection', async (error: Error) => check('Unhandled rejection', error))
-process.on('uncaughtException', async (error) => check('Unhandled Exception', error))
-process.on('exit', async (code) => console.log(chalk.redBright(`Process ended with code <<${code}>>.`)))
+if (config.logging.unhandledRejectionLOGS === true) process.on('unhandledRejection', async (error: Error) => check('Unhandled rejection', error))
+if (config.logging.uncaughtExceptionLOGS === true) process.on('uncaughtException', async (error) => check('Unhandled Exception', error))
+if (config.logging.exitLOGS === true) process.on('exit', async (code) => console.log(chalk.redBright(`Process ended with code <<${code}>>.`)))
 
 function check( prefix: string, error: Error ) {
 	const fields = error.stack?.split('\n')
