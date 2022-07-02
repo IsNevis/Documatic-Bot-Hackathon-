@@ -10,8 +10,8 @@ module.exports = {
       max_restarts: 10,
       exp_backoff_restart_delay: 2500,
 
-      out_file: `logs/DrDocuDev-out.log`,
-      error_file: `logs/DrDocuDev-error.log`,
+      out_file: `logs/DrDocu-out.log`,
+      error_file: `logs/DrDocu-error.log`,
 
   }]
 }
