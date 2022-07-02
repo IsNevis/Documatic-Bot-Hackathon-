@@ -1,0 +1,1 @@
+set testonly to fales in command files to load commands globally
