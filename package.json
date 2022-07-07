@@ -14,7 +14,7 @@
     "url": "git+https://github.com/IsNevis/DrDocu.git"
   },
   "author": "Nevis",
-  "license": "GPL-3.0-only",
+  "license": "AGPL-3.0-only",
   "bugs": {
     "url": "https://github.com/IsNevis/DrDocu/issues"
   },
