@@ -98,5 +98,5 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
   },
-  "include": ["./Procfile", "./ecosystem.config.js", "./ecosystem.prod.config.js", "src"]
+  "include": ["assets/Procfile", "assets/pm2/ecosystem.config.js", "src"]
 }

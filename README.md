@@ -1,4 +1,4 @@
-<img src="cricket.png" width="128">
+<img src="assets/images/cricket.png" width="128">
 
 # DrDocu (TypeScript)
 
