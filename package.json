@@ -6,8 +6,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon src/index.ts",
-    "pm2": "pm2 start ecosystem.config.js",
-    "tsc": "tsc -w --skipLibCheck"
+    "start:raw": "node --enable-source-maps --experimental-json-modules --no-warnings dist/src/index.js",
+    "build": "rm -rf dist && tsc && npm run start:raw",
+    "pm2": "pm2 start assets/pm2/ecosystem.config.js",
+		"upgrade": "rm -rf package-lock.json && npm cache clean --force && npm install && npm up && npm up -R"
   },
   "repository": {
     "type": "git",
@@ -20,7 +22,7 @@
   },
   "homepage": "https://github.com/IsNevis/DrDocu#readme",
   "dependencies": {
-    "chalk": "^4.1.2",
+    "chalk": "4.1.2",
     "discord.js": "^13.7.0",
     "strip-ansi": "^6.0.0",
     "wokcommands": "^1.5.3"
