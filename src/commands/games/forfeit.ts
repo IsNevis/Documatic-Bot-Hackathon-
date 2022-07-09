@@ -9,7 +9,7 @@ export default {
 	guildOnly: true,
 	testOnly: true,
 
-	callback: async ({ }) => {
+	callback: async ({}) => {
 		return simpleEmbed('Ping', ':ping_pong: Pong!')
 	},
 } as ICommand

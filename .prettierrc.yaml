@@ -3,11 +3,11 @@ tabWidth: 4
 useTabs: true
 semi: false
 singleQuote: true
-quoteProps: "consistent"
-trailingComma: "es5"
+quoteProps: 'consistent'
+trailingComma: 'es5'
 bracketSpacing: true
-arrowParens: "always"
+arrowParens: 'always'
 insertPragma: false
-proseWrap: "never"
-endOfLine: "lf"
-embeddedLanguageFormatting: "off"
+proseWrap: 'never'
+endOfLine: 'lf'
+embeddedLanguageFormatting: 'off'

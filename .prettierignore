@@ -3,3 +3,7 @@ logs
 dist
 .git
 *.log
+tsconfig.json
+README.md
+
+

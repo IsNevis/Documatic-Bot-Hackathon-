@@ -8,19 +8,19 @@ export default {
 	slash: true,
 	guildOnly: true,
 	testOnly: true,
-    ownerOnly: true,
+	ownerOnly: true,
 
 	callback: async ({ client, interaction }) => {
-        await client.guilds.fetch()
-        const promises: Promise<Collection<string, ApplicationCommand>>[] = []
-        client.guilds.cache.each((guild) => {
-            promises.push(guild.commands.set([]))
-        })
-        await Promise.all(promises)
+		await client.guilds.fetch()
+		const promises: Promise<Collection<string, ApplicationCommand>>[] = []
+		client.guilds.cache.each((guild) => {
+			promises.push(guild.commands.set([]))
+		})
+		await Promise.all(promises)
 
-        await client.application!.commands.fetch()
-        await client.application!.commands.set([])
+		await client.application!.commands.fetch()
+		await client.application!.commands.set([])
 
-        return await interaction.reply(`Removed guild commands and global commands.`)
+		return await interaction.reply(`Removed guild commands and global commands.`)
 	},
 } as ICommand

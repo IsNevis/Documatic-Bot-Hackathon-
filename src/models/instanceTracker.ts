@@ -1,8 +1,8 @@
 import mongoose, { Schema } from 'mongoose'
 
 const schema = new Schema({
-    // User ID
-    _id: String,
+	// User ID
+	_id: String,
 })
 
 const name = 'instanceTracker'

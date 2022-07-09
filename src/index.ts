@@ -10,26 +10,23 @@ export const client = new DiscordJS.Client({
 	partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'REACTION', 'USER'],
 	allowedMentions: { parse: ['users'] },
 
-	intents: [
-		Intents.FLAGS.GUILD_PRESENCES,
-		Intents.FLAGS.GUILDS,
-		Intents.FLAGS.GUILD_MESSAGES,
-		Intents.FLAGS.GUILD_MEMBERS,
-	],
+	intents: [Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
 
 	presence: {
-		activities: [{
-			name: '**slash commands!**',
-			type: 'LISTENING' 
-		}],
-		status: 'online'
-	}
+		activities: [
+			{
+				name: '**slash commands!**',
+				type: 'LISTENING',
+			},
+		],
+		status: 'online',
+	},
 })
 
-client.login(config.credentials.discordBotToken)
+client
+	.login(config.credentials.discordBotToken)
 	.then(() => console.log(chalk.blueBright(`Successfully logged in as ${client.user?.username}`)))
 	.catch((err) => reLogin(err))
-
 
 client.on('ready', async () => {
 	new WOKCommands(client, {
@@ -41,15 +38,15 @@ client.on('ready', async () => {
 		typeScript: true, // comment this in when compiling to javascript!
 		mongoUri: config.credentials.mongoURI,
 		showWarns: true,
-		disabledDefaultCommands: ['language', 'requiredrole']
+		disabledDefaultCommands: ['language', 'requiredrole'],
 	})
 		.setColor('BLURPLE')
 		.setDefaultPrefix(config.settings.prefix)
 
-		await instanceTracker.deleteMany({ })
+	await instanceTracker.deleteMany({})
 })
 
-function reLogin (err: Error) {
+function reLogin(err: Error) {
 	console.log(chalk.redBright(`Caught error: ${err.message} \n${err.stack}`))
 	console.log('Trying again, Login Failed')
 	setTimeout(() => client.login(config.credentials.discordBotToken).catch(reLogin), config.settings.reloginCooldown * 1000)

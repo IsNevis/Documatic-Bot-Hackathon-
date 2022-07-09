@@ -6,7 +6,7 @@ export default new Config({
 		mongoURI: 'mongo',
 	},
 	developer: {
-		owners: [ 'developer-user-id'],
+		owners: ['developer-user-id'],
 		testServers: ['developer-test-server-id'],
 		debugWebhookURL: 'discord-webhook',
 	},
@@ -25,5 +25,5 @@ export default new Config({
 		unhandledRejectionLOGS: false,
 		uncaughtExceptionLOGS: false,
 		exitLOGS: false,
-	}
+	},
 })

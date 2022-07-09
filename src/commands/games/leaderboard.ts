@@ -9,12 +9,7 @@ export default {
 	guildOnly: true,
 	testOnly: true,
 
-	callback: async ({ }) => {
-  
-		return simpleEmbed(
-			'Leaderboards',
-			'Following is the list of the top match(s) with high scores'
-		)
-				
+	callback: async ({}) => {
+		return simpleEmbed('Leaderboards', 'Following is the list of the top match(s) with high scores')
 	},
 } as ICommand

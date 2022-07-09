@@ -48,5 +48,4 @@ interface Logging {
 	unhandledRejectionLOGS: boolean
 	uncaughtExceptionLOGS: boolean
 	exitLOGS: boolean
-
 }
