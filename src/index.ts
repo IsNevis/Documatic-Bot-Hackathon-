@@ -5,8 +5,6 @@ import chalk from 'chalk'
 import config from './config'
 import instanceTracker from './models/instanceTracker'
 
-const reloginCooldown = config.settings.reloginCooldown * 1000
-
 export const client = new DiscordJS.Client({
 	ws: { properties: { $browser: 'Discord Android' } },
 	partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'REACTION', 'USER'],
@@ -54,5 +52,5 @@ client.on('ready', async () => {
 function reLogin (err: Error) {
 	console.log(chalk.redBright(`Caught error: ${err.message} \n${err.stack}`))
 	console.log('Trying again, Login Failed')
-	setTimeout(() => client.login(config.credentials.discordBotToken).catch(reLogin), reloginCooldown)
+	setTimeout(() => client.login(config.credentials.discordBotToken).catch(reLogin), config.settings.reloginCooldown * 1000)
 }
